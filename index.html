@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" 
+        content="We present a novel audio-visual Occlusion-Robust Gender Recognition and Age Estimation (ORAGEN) approach. The proposed approach is based on intermediate features of unimodal transformer-based models and two Multi-Task Cross-Modal Attention (MTCMA) blocks, which predict gender, age, and protective mask type using voice and facial characteristics.">
+    <meta name="keywords" content="ORAGEN, Multimodal Paralinguistics, Gender Recognition, Age Estimation, Protective Mask Detection, Deep Learning, Transformer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORAGEN: Audio-Visual Occlusion-Robust Gender Recognition and Age Estimation Approach Based on Multi-Task Cross-Modal Attention</title> 
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <link rel="icon" type="image/png" href="https://hci.nw.ru/img/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="https://hci.nw.ru/img/favicon/favicon-196x196.png" sizes="196x196">
+    <link rel="icon" type="image/png" href="https://hci.nw.ru/img/favicon/favicon-228x228.png" sizes="228x228">
+    <link rel="shortcut icon" href="https://hci.nw.ru/img/favicon/favicon.ico" type="image/x-icon">
+
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-57x57.png" sizes="52x57">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-60x60.png" sizes="60x60">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-72x72.png" sizes="72x72">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-76x76.png" sizes="76x76">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-114x114.png" sizes="114x114">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-120x120.png" sizes="120x120">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-144x144.png" sizes="144x144">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-152x152.png" sizes="152x152">
+    <link rel="apple-touch-icon" href="https://hci.nw.ru/img/favicon/apple-touch-icon-180x180.png" sizes="180x180">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,900,900i" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/comp-slider.js" defer></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+    <a id="btt-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"> <polygon id="btt-arr" fill="#BBB" points="12 6.586 3.293 15.293 4.707 16.707 12 9.414 19.293 16.707 20.707 15.293 12 6.586"/>
+        </svg>
+    </a>
+
+    <section class="hero">
+        <div class="hero-body sepline">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title">
+                            ORAGEN: Audio-Visual Occlusion-Robust Gender Recognition and Age Estimation Approach Based on Multi-Task Cross-Modal Attention
+                        </h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://hci.nw.ru/en/employees/10" target="_blank">Maxim Markitantov</a><sup>1</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://hci.nw.ru/en/employees/14" target="_blank">Elena Ryumina</a><sup>2</sup>,
+                            </span>
+                            <span class="author-block">
+                                <a href="https://hci.nw.ru/en/employees/1" target="_blank">Alexey Karpov</a><sup>2</sup>,
+                            </span>
+                        </div>
+
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <sup>2</sup> <a href="https://www.uni-ulm.de/en/" target="_blank">ULM University</a>, Ulm, Germany
+                            </span>
+                            <span class="author-block">
+                                <sup>1</sup> St. Petersburg Institute for Informatics and Automation of the Russian Academy of Sciences, <a href="https://spcras.ru/en/" target="_blank">St. Petersburg Federal Research Center of the Russian Academy of Sciences (SPC RAS)</a>, St. Petersburg, Russia
+                            </span>
+                            <br />
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <!-- PDF Link. -->
+
+                                <!-- Code Link. -->
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                
+                                <!-- Models Link. -->
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span> 
+                                        <span>Models (coming soon)</span>
+                                    </a>
+                                </span>
+                                <!-- Dataset Link. -->
+                                <span class="link-block">
+                                    <a href="https://hci.nw.ru/en/pages/brave-masks" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="far fa-images"></i>
+                                        </span>
+                                        <span>Data</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content">
+                        <h3 class="title is-3">Abstract</h3>
+                        <p class="has-text-justified">
+                            Gender recognition and age estimation are essential tasks within soft biometric systems, where identifying these characteristics supports a wide range of applications. In real-world scenarios, challenges such as partial facial occlusion complicate these tasks by obscuring crucial voice and facial characteristics. These challenges highlight the importance of development of robust and efficient approaches for gender recognition and age estimation. In this study, we develop a novel audio-visual Occlusion-Robust Gender Recognition and Age Estimation (ORAGEN) approach. The proposed approach is based on intermediate features of unimodal transformer-based models and two Multi-Task Cross-Modal Attention (MTCMA) blocks, which predict gender, age, and protective mask type using voice and facial characteristics. We conduct detailed cross-corpus experiments on the TIMIT, aGender, CommonVoice, LAGENDA, IMDB-Clean, AFEW, VoxCeleb2, and BRAVE-MASKS corpora. The proposed unimodal models outperform State-of-the-Art approaches for gender recognition and age estimation. We investigate the impact of various protective mask types on the performance of audio-visual gender recognition and age estimation. The results show that the current large-scale data are still insufficient for a robust gender recognition and age estimation in partial facial occlusion conditions. On the Test subset of the VoxCeleb2 corpus, the proposed approach showed Unweighted Average Recall (UAR) of 99.51%, Mean Absolute Error (MAE) of 5.42, and UAR of 100% for gender recognition, age estimation, and protective mask type recognition, respectively, while on the Test subset of the BRAVE-MASKS corpus, it showed UAR=96.63%, MAE=7.52, and UAR=95.87%, for the same tasks. These results indicate that using data of people wearing protective masks, as well as including the protective mask type recognition task, yields performance gains on all tasks considered. ORAGEN can be integrated into the OCEAN-AI framework for optimizing HR processes, as well as into expert systems with practical applications in various domains including forensics, healthcare, and industrial safety.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content">
+                        <h3 class="title is-3">Pipeline of the Proposed Approach</h3>
+                        <img class="img-method" src="./static/img/proposed_approach.svg" alt="Proposed approach">
+                    </div>
+                    <div class="content has-text-justified">
+                        <p>
+                            Transformer layer and transformer block have different architecture. FCL refers to Fully-Connected Layer, SDPSA to Scaled Dot-Product Self-Attention, MTCMA to Multi-Task Cross-Modal Attention, VAD to Voice Activity Detection, NM to “No mask” class, TM to “Tissue mask”, MM to “Medical Mask”, PM to “Protective mask (FFP2/FFP3)”, PFS to “Protective face shield”, and R to “Respirator”
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+                        <h3 class="title is-3">Architecture of the Proposed Model for Audio-Visual Multi-Task Fusion</h3>
+                        <img class="img-method" src="./static/img/audio_visual_model.svg" alt="Audio-visual model">
+                    </div>
+                    <div class="content has-text-justified">
+                        <p>
+                            MTCMA refers to Multi-Task Cross-Modal Attention. MLP to Multi Layer Perceptron. GELU to Gaussian Error Linear Unit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+                        <h3 class="title is-3">Research Data</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="has-text-left">Corpus</th>
+                                    <th class="has-text-left">Modalities</th>
+                                    <th class="has-text-left">Language</th>
+                                    <th class="has-text-left">Speaker Distribution</th>
+                                    <th class="has-text-left">Audio/Images Distribution</th>
+                                    <th class="has-text-left">File Format</th>
+                                    <th class="has-text-left">Annotation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TIMIT</td>
+                                    <td>A</td>
+                                    <td>English</td>
+                                    <td class="has-text-right">192 females, 438 males, Aged 20-75 y.o., Mean is 29.9 y.o., Std. dev. is 7.9 y.o.</td>
+                                    <td>Total dur.: 6 hours, Num. of utt.: 6300, Avg. utt. dur.: 3.1 s.</td>
+                                    <td>PCM WAV, 16 kHz, Mono/16-bits</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>aGender*</td>
+                                    <td>A</td>
+                                    <td>German</td>
+                                    <td class="has-text-right">335 females, 329 males, 106 children, Aged 7-80 y.o., Mean is 39.3 y.o., Std. dev. is 21.4 y.o.</td>
+                                    <td>Total dur.: 38.1 hours, Num. of utt.: 53074, Avg. utt. dur.: 2.5 s.</td>
+                                    <td>PCM WAV, 8 kHz, Mono/8-bits</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>CommonVoice</td>
+                                    <td>A</td>
+                                    <td>English, German, Russian</td>
+                                    <td class="has-text-right">4352 females, 16828 males, Aged 13-99 y.o.</td>
+                                    <td>Total dur.: 5203 hours, Num. of utt.: 3583K, Avg. utt. dur.: 5.2 s.</td>
+                                    <td>MPEG, 48 kHz</td>
+                                    <td>Gender, Age group</td>
+                                </tr>
+                                <tr>
+                                    <td>LAGENDA</td>
+                                    <td>V</td>
+                                    <td>N/A</td>
+                                    <td class="has-text-right">42735 females, 41457 males, Aged 0-95 y.o., Mean is 36.8 y.o., Std. dev. is 21.6 y.o.</td>
+                                    <td class="has-text-right">67K images</td>
+                                    <td>JPG, Various resolutions</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>IMDB-Clean</td>
+                                    <td>V</td>
+                                    <td>N/A</td>
+                                    <td class="has-text-right">127K females, 158K males, Aged 1-95 y.o., Mean is 37.1 y.o., Std. dev. is 12.8 y.o.</td>
+                                    <td class="has-text-right">296K images</td>
+                                    <td>JPG, Various resolutions</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>AFEW*</td>
+                                    <td>A, V</td>
+                                    <td>English</td>
+                                    <td class="has-text-right">451 females, 705 males, Aged 5-76 y.o., Mean is 35.2 y.o., Std. dev. is 13.4 y.o.</td>
+                                    <td>Total dur.: 0.8 hours, Num. of utt.: 1156, Avg. utt. dur.: 2.5 s.</td>
+                                    <td>MPEG, 16 kHz, MPEG-4, 720x568, 25 FPS</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>VoxCeleb2</td>
+                                    <td>A, V</td>
+                                    <td>English</td>
+                                    <td class="has-text-right">5333 females, 8888 males, Aged 10-95 y.o., Mean is 40.8 y.o., Std. dev. is 14.1 y.o.</td>
+                                    <td>Total dur.: 238 hours, Num. of utt.: 109K, Avg. utt. dur.: 7.8 s.</td>
+                                    <td>AAC, 16 kHz, MPEG-4, 224x224, 25 FPS</td>
+                                    <td>Gender, Age</td>
+                                </tr>
+                                <tr>
+                                    <td>BRAVE-MASKS</td>
+                                    <td>A, V</td>
+                                    <td>Russian</td>
+                                    <td class="has-text-right">15 females, 15 males, Aged 19-86 y.o., Mean is 40.8 y.o., Std. dev. is 19.0 y.o.</td>
+                                    <td>Total dur.: 21 hours, Num. of utt.: 14940, Avg. utt. dur.: 5.0 s.</td>
+                                    <td>PCM WAV, 48 kHz, Mono/16-bits, MPEG-4, 3840x2160, 30/60 FPS</td>
+                                    <td>Protective mask type, Gender, Age</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="content has-text-justified">
+                        <p>
+                            Metadata statistics of the corpora used. Std. dev. refers to standard deviation, avg. to average, utt. to utterance, dur. to duration, N/A to not available. * means that distribution of the Test subset is not available.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-full-screen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered" style="position: relative;">
+                        <h3 class="title is-3">Exeperimental Results</h3>
+                        <div class="slider">
+                            <div class="slider__line">
+                                <div class="slider__item">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="has-text-right">
+                                                <th class="has-text-left">Model</th>
+                                                <th class="has-text-left">Train subset</th>
+                                                <th>TIMIT</th>
+                                                <th>aGender</th>
+                                                <th>CommonVoice</th>
+                                                <th>VoxCeleb2</th>
+                                                <th colspan="2">BRAVE-MASKS</th>
+                                            </tr>
+                                            <tr class="has-text-right">
+                                                <th colspan="6"></th>
+                                                <th>Dev.</th>
+                                                <th>Test</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="8" class="centered">Gender recognition (UAR, %)</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Burkhardt et al. (2023)</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">98.60</td>
+                                                <td class="has-text-right">86.15</td>
+                                                <td class="has-text-right">92.20</td>
+                                                <td class="has-text-right">89.50</td>
+                                                <td class="has-text-right">84.16</td>
+                                                <td class="has-text-right">85.15</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>W2V2-based</b></td>
+                                                <td><b>All corpora</b></td>
+                                                <td class="has-text-right"><b>98.60</b></td>
+                                                <td class="has-text-right"><b>87.17</b></td>
+                                                <td class="has-text-right"><b>92.59</b></td>
+                                                <td class="has-text-right"><b>90.00</b></td>
+                                                <td class="has-text-right"><b>85.14</b></td>
+                                                <td class="has-text-right"><b>86.22</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>HuBERT-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">97.97</td>
+                                                <td class="has-text-right">86.99</td>
+                                                <td class="has-text-right">92.22</td>
+                                                <td class="has-text-right">89.83</td>
+                                                <td class="has-text-right">84.95</td>
+                                                <td class="has-text-right">86.21</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="8" class="centered">Age estimation (MAE)</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Burkhardt et al. (2023)</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">7.10</td>
+                                                <td class="has-text-right">10.80</td>
+                                                <td class="has-text-right">11.15</td>
+                                                <td class="has-text-right">10.31</td>
+                                                <td class="has-text-right">13.96</td>
+                                                <td class="has-text-right">13.09</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>W2V2-based</b></td>
+                                                <td><b>All corpora</b></td>
+                                                <td class="has-text-right"><b>6.90</b></td>
+                                                <td class="has-text-right"><b>10.60</b></td>
+                                                <td class="has-text-right"><b>10.47</b></td>
+                                                <td class="has-text-right"><b>9.91</b></td>
+                                                <td class="has-text-right"><b>11.65</b></td>
+                                                <td class="has-text-right"><b>11.89</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>HuBERT-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">7.00</td>
+                                                <td class="has-text-right">10.92</td>
+                                                <td class="has-text-right">11.32</td>
+                                                <td class="has-text-right">10.34</td>
+                                                <td class="has-text-right">13.01</td>
+                                                <td class="has-text-right">12.23</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="content has-text-justified">
+                                        <p>
+                                            Audio-based experimental results. "All corpora" includes only the TIMIT, aGender, and CommonVoice corpora. Dev. refers to development.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="slider__item">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="has-text-right">
+                                                <th class="has-text-left">Model</th>
+                                                <th class="has-text-left">Train subset</th>
+                                                <th>LAGENDA</th>
+                                                <th>AFEW</th>
+                                                <th colspan="2">IMDB-Clean</th>
+                                                <th>VoxCeleb2</th>
+                                                <th colspan="2">BRAVE-MASKS</th>
+                                            </tr>
+                                            <tr class="has-text-right">
+                                                <th colspan="4"></th>
+                                                <th>Dev.</th>
+                                                <th>Test</th>
+                                                <th></th>
+                                                <th>Dev.</th>
+                                                <th>Test</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="9" class="centered">Gender recognition (UAR, %)</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Kuprashevich et al. (2023)</td>
+                                                <td>IMDB-Clean</td>
+                                                <td class="has-text-right">91.11</td>
+                                                <td class="has-text-right">94.60</td>
+                                                <td class="has-text-right"><b>99.70</b></td>
+                                                <td class="has-text-right"><b>99.40</b></td>
+                                                <td class="has-text-right">98.35</td>
+                                                <td class="has-text-right">87.84</td>
+                                                <td class="has-text-right">93.39</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SDPSA-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right"><b>92.89</b></td>
+                                                <td class="has-text-right">95.16</td>
+                                                <td class="has-text-right">98.49</td>
+                                                <td class="has-text-right">98.37</td>
+                                                <td class="has-text-right">98.37</td>
+                                                <td class="has-text-right">88.12</td>
+                                                <td class="has-text-right"><b>94.44</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>GSA-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">92.72</td>
+                                                <td class="has-text-right"><b>95.41</b></td>
+                                                <td class="has-text-right">98.70</td>
+                                                <td class="has-text-right">98.46</td>
+                                                <td class="has-text-right">98.25</td>
+                                                <td class="has-text-right"><b>89.83</b></td>
+                                                <td class="has-text-right">90.16</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="9" class="centered">Age estimation (MAE)</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Kuprashevich et al. (2023)</td>
+                                                <td>IMDB-Clean</td>
+                                                <td class="has-text-right">5.40</td>
+                                                <td class="has-text-right">6.09</td>
+                                                <td class="has-text-right"><b>3.48</b></td>
+                                                <td class="has-text-right"><b>4.28</b></td>
+                                                <td class="has-text-right">7.32</td>
+                                                <td class="has-text-right">9.60</td>
+                                                <td class="has-text-right">9.22</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SDPSA-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">5.18</td>
+                                                <td class="has-text-right">5.62</td>
+                                                <td class="has-text-right">5.23</td>
+                                                <td class="has-text-right">5.47</td>
+                                                <td class="has-text-right"><b>5.97</b></td>
+                                                <td class="has-text-right"><b>8.86</b></td>
+                                                <td class="has-text-right"><b>8.71</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>GSA-based</td>
+                                                <td>All corpora</td>
+                                                <td class="has-text-right">5.05</td>
+                                                <td class="has-text-right"><b>5.59</b></td>
+                                                <td class="has-text-right">5.03</td>
+                                                <td class="has-text-right">5.43</td>
+                                                <td class="has-text-right">6.59</td>
+                                                <td class="has-text-right">9.65</td>
+                                                <td class="has-text-right">9.42</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="content has-text-justified">
+                                        <p>
+                                            Video-based experimental results. "All corpora" includes only LAGENDA, AFEW, and IMDB-Clean corpora. Dev. refers to development.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slider__btn-prev">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 12L21 24V0L3 12Z" fill="#bbb"/>
+                            </svg>
+                        </div>
+                        <div class="slider__btn-next">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <path d="M21 12l-18 12v-24z" fill="#bbb"/>
+                            </svg>
+                        </div>
+                        <div class="slider__wrapper">
+                            <div class="slider__dot active-dot"></div>
+                            <div class="slider__dot"></div>
+                        </div>
+                    </div>
+
+                    <div class="content has-text-centered">
+                        <table class="table">
+                            <thead>
+                                <tr class="has-text-right">
+                                    <th class="has-text-left">Method</th>
+                                    <th>VoxCeleb2</th>
+                                    <th>BRAVE-MASKS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th colspan="3" class="centered">Gender recognition (UAR, %)</th>
+                                </tr>
+                                <tr>
+                                    <td>Audio-based</td>
+                                    <td class="has-text-right">90.00</td>
+                                    <td class="has-text-right">86.22</td>
+                                </tr>
+                                <tr>
+                                    <td>Video-based</td>
+                                    <td class="has-text-right">98.37</td>
+                                    <td class="has-text-right">94.44</td>
+                                </tr>
+                                <tr>
+                                    <td>Early fusion</td>
+                                    <td class="has-text-right">98.90</td>
+                                    <td class="has-text-right">94.80</td>
+                                </tr>
+                                <tr>
+                                    <td>Intermediate fusion</td>
+                                    <td class="has-text-right">99.11</td>
+                                    <td class="has-text-right">94.95</td>
+                                </tr>
+                                <tr>
+                                    <td>Late fusion</td>
+                                    <td class="has-text-right">99.02</td>
+                                    <td class="has-text-right">97.21</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="centered">Age estimation (MAE)</th>
+                                </tr>
+                                <tr>
+                                    <td>Audio-based</td>
+                                    <td class="has-text-right">9.91</td>
+                                    <td class="has-text-right">11.89</td>
+                                </tr>
+                                <tr>
+                                    <td>Video-based</td>
+                                    <td class="has-text-right">5.97</td>
+                                    <td class="has-text-right">8.71</td>
+                                </tr>
+                                <tr>
+                                    <td>Early fusion</td>
+                                    <td class="has-text-right">5.80</td>
+                                    <td class="has-text-right">9.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Intermediate fusion</td>
+                                    <td class="has-text-right">5.68</td>
+                                    <td class="has-text-right">8.73</td>
+                                </tr>
+                                <tr>
+                                    <td>Late fusion</td>
+                                    <td class="has-text-right">6.51</td>
+                                    <td class="has-text-right">7.23</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="content has-text-justified">
+                        <p>
+                            Experimental results on audio-visual multi-task gender recognition (classification task, 2 classes) and age estimation (regression task) on the Test subsets of the VoxCeleb2 and BRAVE-MASKS corpora.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+                        <h3 class="title is-3">Multi-Task Cross-Modal Attention Visualization</h3>
+                        <img class="img-method" src="./static/img/heatmaps.svg" alt="Cross-modal attention visualization">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section sepline">
+        <div class="container is-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+                        <h3 class="title is-3">Protective Mask Type Influence on Gender Recognition and Age Estimation Performance</h3>
+                        <table class="table">
+                            <thead>
+                                <tr class="has-text-right">
+                                    <th class="has-text-left">Data</th>
+                                    <th>All masks</th>
+                                    <th>No mask</th>
+                                    <th>Tissue mask</th>
+                                    <th>Medical mask</th>
+                                    <th>Protective mask</th>
+                                    <th>Respirator (FFP2/FFP3)</th>
+                                    <th>Protective face shield</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th colspan="8" class="centered">Gender recognition (UAR, %)</th>
+                                </tr>
+                                <tr>
+                                    <td>Audio-visual</td>
+                                    <td class="has-text-right">94.95</td>
+                                    <td class="has-text-right">98.33</td>
+                                    <td class="has-text-right">96.38</td>
+                                    <td class="has-text-right">97.69</td>
+                                    <td class="has-text-right">98.02</td>
+                                    <td class="has-text-right">90.56</td>
+                                    <td class="has-text-right">89.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Audio-only</td>
+                                    <td class="has-text-right">93.98</td>
+                                    <td class="has-text-right">98.33</td>
+                                    <td class="has-text-right">96.77</td>
+                                    <td class="has-text-right">94.75</td>
+                                    <td class="has-text-right">97.80</td>
+                                    <td class="has-text-right">88.61</td>
+                                    <td class="has-text-right">89.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Video-only</td>
+                                    <td class="has-text-right">93.06</td>
+                                    <td class="has-text-right">97.67</td>
+                                    <td class="has-text-right">96.11</td>
+                                    <td class="has-text-right">97.69</td>
+                                    <td class="has-text-right">94.74</td>
+                                    <td class="has-text-right">89.91</td>
+                                    <td class="has-text-right">89.00</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="8" class="centered">Age estimation (MAE)</th>
+                                </tr>
+                                <tr>
+                                    <td>Audio-visual</td>
+                                    <td class="has-text-right">8.73</td>
+                                    <td class="has-text-right">4.83</td>
+                                    <td class="has-text-right">7.74</td>
+                                    <td class="has-text-right">11.12</td>
+                                    <td class="has-text-right">10.44</td>
+                                    <td class="has-text-right">15.27</td>
+                                    <td class="has-text-right">5.63</td>
+                                </tr>
+                                <tr>
+                                    <td>Audio-only</td>
+                                    <td class="has-text-right">11.91</td>
+                                    <td class="has-text-right">10.93</td>
+                                    <td class="has-text-right">12.09</td>
+                                    <td class="has-text-right">15.39</td>
+                                    <td class="has-text-right">12.04</td>
+                                    <td class="has-text-right">17.44</td>
+                                    <td class="has-text-right">8.85</td>
+                                </tr>
+                                <tr>
+                                    <td>Video-only</td>
+                                    <td class="has-text-right">8.98</td>
+                                    <td class="has-text-right">5.92</td>
+                                    <td class="has-text-right">8.78</td>
+                                    <td class="has-text-right">12.29</td>
+                                    <td class="has-text-right">11.06</td>
+                                    <td class="has-text-right">19.87</td>
+                                    <td class="has-text-right">6.62</td>
+                                </tr>
+                            </tbody>
+                        </table>                        
+                    </div>
+                    <div class="content has-text-justified">
+                        <p>
+                            Influence of particular protective mask type on gender recognition (classification task, 2 classes) and age estimation (regression task) performance on the Test subset of the BRAVE-MASKS corpus.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container is-widescreen">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-centered">
+                        <h3 class="title is-3">Possible Application of the Proposed Approach for Optimizing HR Processes</h3>
+                        <img class="img-method" src="./static/img/application.svg" alt="Possible application">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="background-color: rgb(247, 247, 247);">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                <div class="content">
+                    <p>
+                    This page was built using the <a href="https://github.com/SMIL-SPCRAS/ORAGEN" target="_blank">ORAGEN page repository</a>, which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+                    You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+                    Commons Attribution-ShareAlike 4.0 International License</a>.
+                    </p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
